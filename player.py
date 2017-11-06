@@ -17,21 +17,23 @@ GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 preroll = (300.0 / 1000.0)
 
+# playlists
 videos = []
 duration_files = []
 durations = []
 folder = "/mnt/pen/MJPG480/"
 
+# find videos
 for file in os.listdir(folder):
     if file.endswith('.mjpeg'):
         filepath = os.path.join(folder, file)
         videos.append(filepath)
-
+# find carfiles
 for file in os.listdir(folder):
     if file.endswith('.duration'):
         filepath = os.path.join(folder, file)
         duration_files.append(filepath)
-
+# load durations
 for file in duration_files:
     with open(file,'r') as f:
         r = f.readline()
@@ -96,13 +98,9 @@ GPIO.add_event_callback(13, nextcb)
 
 
 # start player
-print('loading ' + videoFile)
+print('loading ' + videoFile + ' duration ' + str(durations[durationIndex]))
 player = OMXPlayer(videoFile, args=['--loop'],
                    dbus_name='org.mpris.MediaPlayer2.omxplayer1')
-# player = OMXPlayer(videoFile, dbus_name='org.mpris.MediaPlayer2.omxplayer1')
-print(player.metadata())
-#player.stopEvent += lambda _: nextcb(0)
-#player.positionEvent += lambda _: nextcb(0)
 
 sleep(5)
 print(player.position())
@@ -120,15 +118,16 @@ print('ready')
 # main
 try:
     while True:
-        #print(player.position(), sep= ' ', end = ' ', flush = True)
-        sleep(1)
+        # check if currently playing clip is ending soon, if yes load next
+        sleep(0.5)
+        # try-except because it happens that this is executed when clips are reloading and no player instance present
         try:
             if player.can_control():
-                if player.position() > durations[durationIndex]:
-                    print('NEXT')
+                if player.position() > (durations[durationIndex] - 1):
+                    print('auto next after playback')
                     nextcb(0)
         except:
-            print('goin on')
+            print('.')
         # do nothing
         pass
 
