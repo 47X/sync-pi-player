@@ -18,15 +18,38 @@ GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 preroll = (300.0 / 1000.0)
 
 videos = []
-
+duration_files = []
+durations = []
 folder = "/mnt/pen/MJPG480/"
+
 for file in os.listdir(folder):
-    filepath = os.path.join(folder, file)
-    videos.append(filepath)
+    if file.endswith('.mjpeg'):
+        filepath = os.path.join(folder, file)
+        videos.append(filepath)
+
+for file in os.listdir(folder):
+    if file.endswith('.duration'):
+        filepath = os.path.join(folder, file)
+        duration_files.append(filepath)
+
+for file in duration_files:
+    with open(file,'r') as f:
+        r = f.readline()
+        r = r.replace('\n', '').replace(' ', '').replace('\r', '')
+        durations.append(float(r))
 
 videos.sort()
-print("found " + str(videos))
+duration_files.sort()
+print('_________________')
+print("found video files" + str(videos))
+print('_________________')
+print("found duration files " + str(duration_files))
+print('_________________')
+print("read durations " + str(durations))
+
+
 videoIndex = 0
+durationIndex = 0
 videoFile = videos[videoIndex]
 
 # gpio callbacks
@@ -46,8 +69,9 @@ def playcb(channel):
 
 def nextcb(channel):
     global videoIndex
-
+    global durationIndex
     videoIndex = (videoIndex + 1) % len(videos)
+    durationIndex = (durationIndex + 1) % len(durations)
     videoFile = videos[videoIndex]
     print('loading ' + videoFile)
     player.load(videoFile)
@@ -100,7 +124,7 @@ try:
         sleep(1)
         try:
             if player.can_control():
-                if player.position() > 6:
+                if player.position() > durations[durationIndex]:
                     print('NEXT')
                     nextcb(0)
         except:
