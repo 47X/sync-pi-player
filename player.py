@@ -6,14 +6,15 @@ from time import sleep
 import os
 import sys
 import RPi.GPIO as GPIO
+import keyboard #pip3 install keyboard
 #import logging
 # logging.basicConfig(level=logging.INFO)
 
 
-# GPIO setup
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+# # GPIO setup
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+# GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 preroll = (300.0 / 1000.0)
 
@@ -90,12 +91,15 @@ def waitfor(pl):
     # sleep(0.1)
 
 
-# gpio event setup
-GPIO.add_event_detect(13, GPIO.RISING, bouncetime=300)
-GPIO.add_event_detect(21, GPIO.RISING, bouncetime=300)
-GPIO.add_event_callback(21, playcb)
-GPIO.add_event_callback(13, nextcb)
+# # gpio event setup, uncomment for gpio
+# GPIO.add_event_detect(13, GPIO.RISING, bouncetime=300)
+# GPIO.add_event_detect(21, GPIO.RISING, bouncetime=300)
+# GPIO.add_event_callback(21, playcb)
+# GPIO.add_event_callback(13, nextcb)
 
+# keyboard setup
+keyboard.add_hotkey('p', lambda: playcb(21))
+keyboard.add_hotkey('n', lambda: nextcb(13))
 
 # start player
 print('loading ' + videoFile + ' duration ' + str(durations[durationIndex]))
