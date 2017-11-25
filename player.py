@@ -10,7 +10,6 @@ import keyboard #pip3 install keyboard
 #import logging
 # logging.basicConfig(level=logging.INFO)
 
-
 # # GPIO setup
 # GPIO.setmode(GPIO.BCM)
 # GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -56,8 +55,6 @@ durationIndex = 0
 videoFile = videos[videoIndex]
 
 # gpio callbacks
-
-
 def playcb(channel):
     if player.is_playing():
         print('rewinding')
@@ -84,7 +81,7 @@ def nextcb(channel):
     player.pause()
     print('ready')
 
-
+# wait for dbus
 def waitfor(pl):
     while not pl.can_control():
         pass
@@ -138,5 +135,5 @@ try:
 
 # cleanup
 except KeyboardInterrupt:
-    GPIO.cleanup()       # clean up GPIO on CTRL+C exit
+    # GPIO.cleanup()       # clean up GPIO on CTRL+C exit
     player.quit()
