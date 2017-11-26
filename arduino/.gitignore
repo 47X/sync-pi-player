@@ -1,6 +1,3 @@
-.sync-config.cson
-*.swp
-todo_private.md
 .pioenvs
 .piolibdeps
 .clang_complete
