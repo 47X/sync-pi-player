@@ -3,8 +3,8 @@
 
 //IO config
 #define audioLeft A0 //brown, 10k pulldown to A1 set as gnd
-#define audioRight A2 //white or any marked special
-#define audioGnd A1 //red, 10k pulldown to A1 set as gnd
+#define audioRight A2 //red, 10k pulldown to A1 set as gnd
+#define audioGnd A1 //white or any marked special, run out of colors
 #define xlrPlayIn 2 //black
 #define xlrNextIn 3 //gray
 #define xlrGnd 4 //white
@@ -18,16 +18,18 @@
 #define audioSensitivity 10
 
 void playAction(){
-  Serial.println("play action");
+  //Serial.println("play action");
+  Keyboard.print('p');
 }
 
 void nextAction(){
-  Serial.println("next action");
+  //Serial.println("next action");
+  Keyboard.print('n');
 }
 
 void setup() {
     //setup communications
-    Serial.begin(9600);
+    //Serial.begin(9600);
     Keyboard.begin();
     //setup pin modes
     pinMode(audioLeft, INPUT);
@@ -50,8 +52,8 @@ void setup() {
 }
 
 //globals for reading state
-bool audioPlay;
-bool audioNext;
+int audioPlay;
+int audioNext;
 bool buttonPlay;
 bool buttonNext;
 bool xlrPlay;
@@ -67,14 +69,29 @@ void loop() {
   xlrPlay =! digitalRead(xlrPlayIn);
   xlrNext =! digitalRead(xlrNextIn);
   //if audio > audioSensitivity or btns or pins execute action and wait
-  if (audioPlay > 10 or buttonPlay or xlrPlay) {
+  if (audioPlay > audioSensitivity or buttonPlay or xlrPlay) {
     playAction();
-    delay(500);
+    //blink once
+    digitalWrite(playBtnLed, 1);
+    delay(300);
+    digitalWrite(playBtnLed, 0);
+    delay(100);
   }
-  if (audioNext > 10 or buttonNext or xlrNext) {
+  if (audioNext > audioSensitivity or buttonNext or xlrNext) {
     nextAction();
-    delay(500);
+    //blink twice
+    digitalWrite(playBtnLed, 1);
+    delay(100);
+    digitalWrite(playBtnLed, 0);
+    delay(100);
+    digitalWrite(playBtnLed, 1);
+    delay(100);
+    digitalWrite(playBtnLed, 0);
+    delay(100);
   }
-  //wait 1ms in loop anyway
-  delay(1);
+  //wait 1ms in loop anyway?
+  //Serial.print(audioPlay);
+  //Serial.print(" ");
+  //Serial.println(audioNext);
+  //delay(1);
 }
