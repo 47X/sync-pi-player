@@ -2,27 +2,27 @@
 #include <Keyboard.h>
 
 //IO config
-#define audioLeft A1
-#define audioRight A2
-#define audioGnd A0
-#define xlrPlay 2
-#define xlrNext 3
-#define xlrGnd 4
-#define nextBtnIn 5
-#define nextBtnGnd 6
-#define playBtnIn 7
-#define playBtnGnd 8
-#define playBtnLed 9
-#define builtinLed 13 //17 for pro micro
+#define audioLeft A0 //brown, 10k pulldown to A1 set as gnd
+#define audioRight A2 //white or any marked special
+#define audioGnd A1 //red, 10k pulldown to A1 set as gnd
+#define xlrPlay 2 //black
+#define xlrNext 3 //gray
+#define xlrGnd 4 //white
+#define nextBtnIn 5 //yellow
+#define nextBtnGnd 6 //orange
+#define playBtnIn 7 //purple
+#define playBtnGnd 8 //blue
+#define playBtnLed 9 //green, PWM
+#define builtinLed 17 //13 for leonardo, 17 for pro micro
 
 #define audioSensitivity 10
 
 void playAction(){
-
+  Serial.println("play action");
 }
 
 void nextAction(){
-
+  Serial.println("next action");
 }
 
 void setup() {
