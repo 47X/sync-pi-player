@@ -49,6 +49,13 @@ void setup() {
     digitalWrite(xlrGnd, 0);
     digitalWrite(nextBtnGnd, 0);
     digitalWrite(playBtnGnd, 0);
+    //blink led few times to show that we are ready
+    for (size_t i = 0; i < 10; i++) {
+      digitalWrite(playBtnLed, 1);
+      delay(200);
+      digitalWrite(playBtnLed, 0);
+      delay(100);
+    }
 }
 
 //globals for reading state
