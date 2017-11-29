@@ -1,6 +1,6 @@
 #!/bin/bash
 #User autorun script invoked from .bashrc on main tty, run as as user pi
-clear
+reset
 cd /home/pi/sync-pi-player
 echo ___________________________________________________
 echo
