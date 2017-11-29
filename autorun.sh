@@ -38,6 +38,11 @@ if [[ $keypressed = p ]]
     echo Press PLAY or NEXT to continue...
     read -rsn1
 fi
+
+#initialize autossh reverse tunnel for remote access
+autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R $(cat /mnt/pen/PORT):localhost:22 pi@aruba
+
+
 #exit 0
 #cycle hdmi power to get black screen under video
 tvservice -o
