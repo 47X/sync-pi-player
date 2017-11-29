@@ -9,7 +9,7 @@ echo current software repository version:
 git show --pretty=medium --abbrev-commit |head -n 3
 echo ___________________________________________________
 echo
-echo Press PLAY in 15 seconds to check for connection and updates, press NEXT to skip ...
+echo Press NEXT to skip, press PLAY in 15 seconds to check for connection and updates, must be powered on during update!
 read -rs -n1 -t15 keypressed
 if [[ $keypressed = p ]]
   then
@@ -26,7 +26,7 @@ if [[ $keypressed = p ]]
         echo current software repository version:
         git show --pretty=medium --abbrev-commit |head -n 3
         echo
-        echo Press PLAY or NEXT to reboot...
+        echo DO NOT UNPLUG POWER NOW! Press PLAY or NEXT to reboot...
         read -rsn1
         echo Rebooting now
         sudo reboot
