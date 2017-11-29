@@ -1,5 +1,5 @@
 #!/bin/bash
-#User autorun script invoked from /etc/rc.local, run as as user pi
+#User autorun script invoked from .bashrc on main tty, run as as user pi
 cd /home/pi/sync-pi-player
 echo ___________________________________________________
 echo
