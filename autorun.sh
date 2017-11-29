@@ -6,7 +6,8 @@ echo ___________________________________________________
 echo
 echo SYNC-PI-PLAYER
 echo "(c) 2017 Aleksander Janas, o@kilku.com"
-echo current software repository version:
+echo Version: $(git log master |grep commit | wc -l)
+echo Current software repository version:
 git show --pretty=medium --abbrev-commit |head -n 3
 echo ___________________________________________________
 echo
@@ -19,13 +20,13 @@ if [[ $keypressed = p ]]
     if wget -q --tries=10 --timeout=20 --spider http://github.com
       then
         echo Connected, checking for updates ....
+        echo Version on server: $(git log origin/master |grep commit | wc -l)
         sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot
         git pull
         sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot
         echo ___________________________________________________
         echo ___________________________________________________
-        echo current software repository version:
-        git show --pretty=medium --abbrev-commit |head -n 3
+        echo Version: $(git log master |grep commit | wc -l)
         echo
         echo DO NOT UNPLUG POWER NOW! Press PLAY or NEXT to reboot...
         read -rsn1
