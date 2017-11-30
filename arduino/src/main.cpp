@@ -15,7 +15,7 @@
 #define playBtnLed 9 //green, PWM
 #define builtinLed 17 //13 for leonardo, 17 for pro micro
 
-#define audioSensitivity 10
+#define audioSensitivity 150
 
 void playAction(){
   //Serial.println("play action");
@@ -32,8 +32,8 @@ void setup() {
     //Serial.begin(9600);
     Keyboard.begin();
     //setup pin modes
-    pinMode(audioLeft, INPUT);
-    pinMode(audioRight, INPUT);
+    pinMode(audioLeft, INPUT_PULLUP);
+    pinMode(audioRight, INPUT_PULLUP);
     pinMode(audioGnd, OUTPUT);
     pinMode(xlrPlayIn, INPUT_PULLUP);
     pinMode(xlrNextIn, INPUT_PULLUP);
@@ -70,13 +70,14 @@ void loop() {
   //read audio
   audioPlay = analogRead(audioLeft);
   audioNext = analogRead(audioRight);
+
   //read buttons and xlr
   buttonPlay =! digitalRead(playBtnIn);
   buttonNext =! digitalRead(nextBtnIn);
   xlrPlay =! digitalRead(xlrPlayIn);
   xlrNext =! digitalRead(xlrNextIn);
-  //if audio > audioSensitivity or btns or pins execute action and wait
-  if (audioPlay > audioSensitivity or buttonPlay or xlrPlay) {
+  //if (audio > audioSensitivity and connected to gnd) or btns or pins execute action and wait
+  if ((audioPlay > audioSensitivity and audioPlay < 1000) or buttonPlay or xlrPlay) {
     playAction();
     //blink once
     digitalWrite(playBtnLed, 1);
@@ -84,7 +85,7 @@ void loop() {
     digitalWrite(playBtnLed, 0);
     delay(100);
   }
-  if (audioNext > audioSensitivity or buttonNext or xlrNext) {
+  if ((audioNext > audioSensitivity and audioNext < 1000) or buttonNext or xlrNext) {
     nextAction();
     //blink twice
     digitalWrite(playBtnLed, 1);
