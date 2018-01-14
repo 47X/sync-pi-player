@@ -5,50 +5,55 @@
 #define audioLeft A0 //brown, 10k pulldown to A1 set as gnd
 #define audioRight A2 //red, 10k pulldown to A1 set as gnd
 #define audioGnd A1 //white or any marked special, run out of colors
-#define xlrPlayIn 2 //black
-#define xlrNextIn 3 //gray
-#define xlrGnd 4 //white
-#define nextBtnIn 5 //yellow
-#define nextBtnGnd 6 //orange
-#define playBtnIn 7 //purple
-#define playBtnGnd 8 //blue
-#define playBtnLed 9 //green, PWM
-#define builtinLed 17 //13 for leonardo, 17 for pro micro
+
+#define ledGnd 8
+#define playBtnLed 9
+
+#define playWire 3
+#define nextWire 2
 
 #define audioSensitivity 150
 
 void playAction(){
+//  pinMode(playWire, OUTPUT);
+  digitalWrite(playWire, 0);
+  delay(200);
+  digitalWrite(playWire, 1);
+//  pinMode(playWire, INPUT_PULLUP);
   //Serial.println("play action");
-  Keyboard.print('p');
+
+  //Keyboard.print('p');
 }
 
 void nextAction(){
+ //pinMode(nextWire, OUTPUT);
+ digitalWrite(nextWire, 0);
+ delay(200);
+ digitalWrite(nextWire, 1);
+ //pinMode(nextWire, INPUT_PULLUP);
   //Serial.println("next action");
-  Keyboard.print('n');
+
+  //Keyboard.print('n');
 }
 
 void setup() {
     //setup communications
     //Serial.begin(9600);
-    Keyboard.begin();
+    //Keyboard.begin();
     //setup pin modes
     pinMode(audioLeft, INPUT_PULLUP);
     pinMode(audioRight, INPUT_PULLUP);
     pinMode(audioGnd, OUTPUT);
-    pinMode(xlrPlayIn, INPUT_PULLUP);
-    pinMode(xlrNextIn, INPUT_PULLUP);
-    pinMode(xlrGnd, OUTPUT);
-    pinMode(nextBtnIn, INPUT_PULLUP);
-    pinMode(nextBtnGnd, OUTPUT);
-    pinMode(playBtnIn, INPUT_PULLUP);
-    pinMode(playBtnGnd, OUTPUT);
-    pinMode(playBtnLed, OUTPUT);
-    pinMode(builtinLed, OUTPUT);
+
+    pinMode(playWire, OUTPUT);
+    pinMode(nextWire, OUTPUT);
+    pinMode(ledGnd, OUTPUT);
     //set GND pins to low
     digitalWrite(audioGnd, 0);
-    digitalWrite(xlrGnd, 0);
-    digitalWrite(nextBtnGnd, 0);
-    digitalWrite(playBtnGnd, 0);
+    digitalWrite(ledGnd, 0);
+    digitalWrite(playWire, 1);
+    digitalWrite(nextWire, 1);
+
     //blink led few times to show that we are ready
     for (size_t i = 0; i < 10; i++) {
       digitalWrite(playBtnLed, 1);
@@ -71,22 +76,20 @@ void loop() {
   audioPlay = analogRead(audioLeft);
   audioNext = analogRead(audioRight);
 
-  //read buttons and xlr
-  buttonPlay =! digitalRead(playBtnIn);
-  buttonNext =! digitalRead(nextBtnIn);
-  xlrPlay =! digitalRead(xlrPlayIn);
-  xlrNext =! digitalRead(xlrNextIn);
   //if (audio > audioSensitivity and connected to gnd) or btns or pins execute action and wait
-  if ((audioPlay > audioSensitivity and audioPlay < 500) or buttonPlay or xlrPlay) {
+  if (audioPlay > audioSensitivity and audioPlay < 500) {
     playAction();
+  //  Serial.println(audioPlay);
     //blink once
     digitalWrite(playBtnLed, 1);
     delay(300);
     digitalWrite(playBtnLed, 0);
     delay(100);
   }
-  if ((audioNext > audioSensitivity and audioNext < 500) or buttonNext or xlrNext) {
+  if (audioNext > audioSensitivity and audioNext < 500) {
     nextAction();
+//    Serial.println(audioNext);
+
     //blink twice
     digitalWrite(playBtnLed, 1);
     delay(100);
