@@ -76,7 +76,9 @@ def nextcb(channel):
     durationIndex = (durationIndex + 1) % len(durations)
     videoFile = videos[videoIndex]
     print('loading ' + videoFile)
+    os.popen("tvservice -o")
     player.load(videoFile)
+    os.popen("tvservice -p")
     player.set_aspect_mode('stretch')
     player.set_position(0.00)
     sleep(preroll)
