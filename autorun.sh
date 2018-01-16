@@ -20,8 +20,10 @@ if [[ $keypressed = p ]]
     if wget -q --tries=10 --timeout=20 --spider http://github.com
       then
         echo Connected, checking for updates ....
-        echo Version on server: $(git log origin/master |grep commit | wc -l)
         sudo mount -o remount,rw / ; sudo mount -o remount,rw /boot
+        git remote update
+        echo Version on server: $(git log origin/master |grep commit | wc -l)
+        git reset --hard
         git pull
         sudo mount -o remount,ro / ; sudo mount -o remount,ro /boot
         echo ___________________________________________________
