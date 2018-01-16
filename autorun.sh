@@ -40,7 +40,7 @@ if [[ $keypressed = p ]]
 fi
 
 #initialize autossh reverse tunnel for remote access
-autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R $(cat /mnt/pen/PORT):localhost:22 pi@aruba
+#autossh -M 0 -q -f -N -o "ServerAliveInterval 60" -o "ServerAliveCountMax 3" -R $(cat /mnt/pen/PORT):localhost:22 pi@aruba
 
 
 #exit 0

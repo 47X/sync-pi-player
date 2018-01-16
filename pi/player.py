@@ -28,11 +28,15 @@ for file in os.listdir(folder):
     if file.endswith('.mjpeg'):
         filepath = os.path.join(folder, file)
         videos.append(filepath)
+videos.sort()
+
 # find carfiles
 for file in os.listdir(folder):
     if file.endswith('.duration'):
         filepath = os.path.join(folder, file)
         duration_files.append(filepath)
+duration_files.sort()
+
 # load durations
 for file in duration_files:
     with open(file,'r') as f:
@@ -40,8 +44,6 @@ for file in duration_files:
         r = r.replace('\n', '').replace(' ', '').replace('\r', '')
         durations.append(float(r))
 
-videos.sort()
-duration_files.sort()
 print('_________________')
 print("found video files" + str(videos))
 print('_________________')
