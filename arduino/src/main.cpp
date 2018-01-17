@@ -2,20 +2,24 @@
 #include <Keyboard.h>
 
 //IO config
-#define audioLeft A0 //brown, 10k pulldown to A1 set as gnd
-#define audioRight A2 //red, 10k pulldown to A1 set as gnd
+#define audioLeft A0 //brown, left audio input
+#define audioRight A2 //red, right audio input
 #define audioGnd A1 //white or any marked special, run out of colors
-#define xlrPlayIn 2 //black
-#define xlrNextIn 3 //gray
+#define xlrPlayIn 2 //black, remote paly button
+#define xlrNextIn 3 //gray, remote next button
 #define xlrGnd 4 //white
-#define nextBtnIn 5 //yellow
+#define nextBtnIn 5 //yellow, local next button
 #define nextBtnGnd 6 //orange
-#define playBtnIn 7 //purple
+#define playBtnIn 7 //purple, local play button
 #define playBtnGnd 8 //blue
-#define playBtnLed 9 //green, PWM
+#define playBtnLed 9 //green, PWM, led in play button
 #define builtinLed 17 //13 for leonardo, 17 for pro micro
+#define enableBtnIn 10 //any color, switch to cut-off local control buttons
+#define enableBtnGnd 16 //any color
 
-#define audioSensitivity 150
+
+#define audioSensitivityLow 150
+#define audioSensitivityHigh 500
 
 void playAction(){
   //Serial.println("play action");
@@ -49,6 +53,11 @@ void setup() {
     digitalWrite(xlrGnd, 0);
     digitalWrite(nextBtnGnd, 0);
     digitalWrite(playBtnGnd, 0);
+    //set cut-off switch
+    pinMode(enableBtnIn, INPUT_PULLUP);
+    pinMode(enableBtnGnd, OUTPUT);
+    digitalWrite(enableBtnGnd, 0);
+
     //blink led few times to show that we are ready
     for (size_t i = 0; i < 10; i++) {
       digitalWrite(playBtnLed, 1);
@@ -65,6 +74,7 @@ bool buttonPlay;
 bool buttonNext;
 bool xlrPlay;
 bool xlrNext;
+bool enableBtn;
 
 void loop() {
   //read audio
@@ -76,8 +86,9 @@ void loop() {
   buttonNext =! digitalRead(nextBtnIn);
   xlrPlay =! digitalRead(xlrPlayIn);
   xlrNext =! digitalRead(xlrNextIn);
+  enableBtn = digitalRead(enableBtnIn);
   //if (audio > audioSensitivity and connected to gnd) or btns or pins execute action and wait
-  if ((audioPlay > audioSensitivity and audioPlay < 500) or buttonPlay or xlrPlay) {
+  if ((audioPlay > audioSensitivityLow and audioPlay < audioSensitivityHigh) or (buttonPlay and enableBtn) or xlrPlay) {
     playAction();
     //blink once
     digitalWrite(playBtnLed, 1);
@@ -85,7 +96,7 @@ void loop() {
     digitalWrite(playBtnLed, 0);
     delay(100);
   }
-  if ((audioNext > audioSensitivity and audioNext < 500) or buttonNext or xlrNext) {
+  if ((audioNext > audioSensitivityLow and audioNext < audioSensitivityHigh) or (buttonNext and enableBtn) or xlrNext) {
     nextAction();
     //blink twice
     digitalWrite(playBtnLed, 1);
