@@ -77,12 +77,12 @@ def nextcb(channel):
     videoFile = videos[videoIndex]
     print('loading ' + videoFile)
     os.popen("tvservice -o")
-    player.load(videoFile, pause=True)
+    player.load(videoFile)
     os.popen("tvservice -p")
     player.set_aspect_mode('stretch')
-    # player.set_position(0.00)
-    # sleep(preroll)
-    # player.pause()
+    player.set_position(0.00)
+    sleep(preroll)
+    player.pause()
     print('ready')
 
 # wait for dbus
