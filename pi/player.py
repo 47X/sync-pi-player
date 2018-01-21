@@ -7,8 +7,8 @@ import os
 import sys
 import RPi.GPIO as GPIO
 import keyboard #pip3 install keyboard
-#import logging
-# logging.basicConfig(level=logging.INFO)
+import logging
+logging.basicConfig(level=logging.INFO)
 
 # # GPIO setup
 # GPIO.setmode(GPIO.BCM)
@@ -77,12 +77,12 @@ def nextcb(channel):
     videoFile = videos[videoIndex]
     print('loading ' + videoFile)
     os.popen("tvservice -o")
-    player.load(videoFile)
+    player.load(videoFile, pause=True)
     os.popen("tvservice -p")
     player.set_aspect_mode('stretch')
-    player.set_position(0.00)
-    sleep(preroll)
-    player.pause()
+    # player.set_position(0.00)
+    # sleep(preroll)
+    # player.pause()
     print('ready')
 
 # wait for dbus
