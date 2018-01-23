@@ -15,7 +15,7 @@ logging.basicConfig(level=logging.INFO)
 # GPIO.setup(21, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 # GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
-preroll = (300.0 / 1000.0)
+preroll = (400.0 / 1000.0)
 
 # playlists
 videos = []
@@ -79,9 +79,10 @@ def nextcb(channel):
     os.popen("tvservice -o")
     player.load(videoFile)
     os.popen("tvservice -p")
-    player.set_aspect_mode('stretch')
-    player.set_position(0.00)
     sleep(preroll)
+    player.set_aspect_mode('stretch')
+    sleep(preroll)
+    player.set_position(0.00)
     player.pause()
     print('ready')
 
