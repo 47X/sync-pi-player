@@ -80,7 +80,7 @@ def nextcb(channel):
     player.load(videoFile)
     os.popen("tvservice -p")
     sleep(0.800) #experimental
-    player.set_aspect_mode('stretch')
+    # player.set_aspect_mode('stretch')
     player.set_position(0.00)
     sleep(preroll)
     player.pause()
@@ -110,7 +110,7 @@ player = OMXPlayer(videoFile, args=['--loop'],
 
 sleep(5)
 print(player.position())
-player.set_aspect_mode('stretch')
+# player.set_aspect_mode('stretch')
 player.set_position(0.00)
 # print(player.position())
 # player.seek(10)
