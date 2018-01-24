@@ -79,6 +79,7 @@ def nextcb(channel):
     os.popen("tvservice -o")
     player.load(videoFile)
     os.popen("tvservice -p")
+    sleep(800) #experimental
     player.set_aspect_mode('stretch')
     player.set_position(0.00)
     sleep(preroll)
