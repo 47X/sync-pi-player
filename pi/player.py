@@ -21,11 +21,11 @@ preroll = (400.0 / 1000.0)
 videos = []
 duration_files = []
 durations = []
-folder = "/mnt/pen/MJPG480/"
+folder = "/mnt/pen/MP4/"
 
 # find videos
 for file in os.listdir(folder):
-    if file.endswith('.mjpeg'):
+    if file.endswith('.mp4'):
         filepath = os.path.join(folder, file)
         videos.append(filepath)
 videos.sort()
